@@ -651,7 +651,8 @@ class TopologyMap(models.Model):
         )
         for interface in connected_interfaces:
             style = 'solid' if interface.connection_status == CONNECTION_STATUS_CONNECTED else 'dashed'
-            self.graph.edge(interface.device.name, interface.connected_endpoint.device.name, style=style)
+            color = 'black' if interface.cable.color is None else '#' + interface.cable.color
+            self.graph.edge(interface.device.name, interface.connected_endpoint.device.name, style=style, color=color)
 
         # Add all circuits to the graph
         for termination in CircuitTermination.objects.filter(term_side='A', connected_endpoint__device__in=devices):
